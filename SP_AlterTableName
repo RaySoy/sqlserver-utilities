@@ -15,7 +15,7 @@ DECLARE @tableName VARCHAR(MAX);
 DECLARE @tableNewName VARCHAR(MAX);
 
 DECLARE objCursor CURSOR FORWARD_ONLY FOR
-	SELECT obj.name FROM sys.objects obj WHERE obj.name = 'AllestimentiAfterMarket';
+	SELECT obj.name FROM sys.objects obj WHERE obj.type_desc IN ('USER_TABLE', 'SQL_STORED_PROCEDURE', 'VIEW');
 OPEN objCursor
 	FETCH NEXT FROM objCursor INTO @tableName;
 	WHILE @@FETCH_STATUS = 0 BEGIN
