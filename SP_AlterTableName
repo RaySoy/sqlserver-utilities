@@ -1,0 +1,25 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		  YOS
+-- Create date: 2020-03-11
+-- Description:	Change table name.
+-- =============================================
+ALTER PROCEDURE [dbo].[_service_AlterDbUserTableNames]
+AS
+BEGIN
+
+DECLARE objCursor CURSOR FORWARD_ONLY FOR
+	SELECT obj.name FROM sys.objects obj;
+OPEN objCursor
+	FETCH NEXT FROM objCursor INTO @tableName;
+	WHILE @@FETCH_STATUS = 0 BEGIN
+		EXEC sp_rename @tableName, CONCAT('PREFIX_', @tableName); --INSTEAD OF CONCAT INSERT THE NAME YOU DESIRE
+		FETCH NEXT FROM objCursor INTO @tableName;
+	END;
+CLOSE objCursor;
+DEALLOCATE objCursor;
+
+END
