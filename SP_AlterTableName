@@ -11,12 +11,16 @@ ALTER PROCEDURE [dbo].[_service_AlterDbUserTableNames]
 AS
 BEGIN
 
+DECLARE @tableName VARCHAR(MAX);
+DECLARE @tableNewName VARCHAR(MAX);
+
 DECLARE objCursor CURSOR FORWARD_ONLY FOR
-	SELECT obj.name FROM sys.objects obj;
+	SELECT obj.name FROM sys.objects obj WHERE obj.name = 'AllestimentiAfterMarket';
 OPEN objCursor
 	FETCH NEXT FROM objCursor INTO @tableName;
 	WHILE @@FETCH_STATUS = 0 BEGIN
-		EXEC sp_rename @tableName, CONCAT('PREFIX_', @tableName); --INSTEAD OF CONCAT INSERT THE NAME YOU DESIRE
+		SET @tableNewName = CONCAT('QUOT_', @tableName);
+		EXEC sp_rename @tableName, @tableNewName;
 		FETCH NEXT FROM objCursor INTO @tableName;
 	END;
 CLOSE objCursor;
